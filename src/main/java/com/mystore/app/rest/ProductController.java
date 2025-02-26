@@ -59,16 +59,46 @@ public class ProductController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    // TODO: API to search products by name
+    @GetMapping("/search")
+    public ResponseEntity<Product> getProductByName(@RequestParam("name") String name) {
+        Product p = productService.findProductByName(name);
+        if (p != null) {
+            return new ResponseEntity<>(p, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
-    // TODO: API to filter products by category
+    @GetMapping("/filter/category")
+    public ResponseEntity<List<Product>> getProductByCategory(@RequestParam("category") String category) {
+        List<Product> products = productService.findProductByCategory(category);
+        if (products.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
 
 
-    // TODO: API to filter products by price range
+    @GetMapping("/filter/price")
+    public ResponseEntity<List<Product>> filterProductByPriceRange(@RequestParam("minPrice") Double minPrice, @RequestParam("maxPrice") Double maxPrice) {
+        List<Product> products = productService.filterProductByPriceRange(minPrice, maxPrice);
+        if (products.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
 
 
-    // TODO: API to filter products by stock quantity range
+    @GetMapping("/filter/stock")
+    public ResponseEntity<List<Product>> filterProductByStockRange(@RequestParam("minStock") Integer minStock, @RequestParam("maxStock") Integer maxStock) {
+        List<Product> products = productService.filterProductByStockQuantityRange(minStock, maxStock);
+        if (products.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
 
 
 }
